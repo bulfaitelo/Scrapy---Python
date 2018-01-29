@@ -13,8 +13,9 @@ class OlxPipeline(object):
             'insert into cars (title, ports, year) values (:title, :ports, :year)',
             item            
         )
+        self.conn.commit()
         return item
-
+        
     def create_table(self):
         result = self.conn.execute(
             'select name from sqlite_master where type = "table" and name = "cars"'

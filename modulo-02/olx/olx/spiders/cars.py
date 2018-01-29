@@ -37,6 +37,6 @@ class CarsSpider(scrapy.Spider):
         ).extract_first()
         yield {
             'title': title,
-            'port' : ports, 
+            'ports' : ports, 
             'year' : year,
         }
