@@ -17,6 +17,16 @@ class VeducaSpider(scrapy.Spider):
             yield scrapy.Request(
                 url=url, callback=self.parse_detail
             )
+        next_page = response.xpath(
+            "//span[contains(@class, 'next')]/a/@href"
+        ).extract_first()
+        if next_page:
+            self.log("PAGE: %s" % next_page)
+            url = 'http://veduca.org%s' % next_page
+            yield scrapy.Request(
+                url = url, callback=self.parse
+            )
+
 
     def parse_detail(self, response):
         loader = VeducaItemLoader(CourseItem(), response=response)
