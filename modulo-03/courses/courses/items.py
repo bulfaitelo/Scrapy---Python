@@ -6,8 +6,13 @@
 # https://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
+from w3lib.html import remove_tags
+from scrapy.loader.processors import TakeFirst, Join, TakeFirst, MapCompose
+from scrapy.loader import ItemLoader
 
-from scrapy.loader.processors import TakeFirst, Join
+class VeducaItemLoader(ItemLoader):
+    default_output_processor = TakeFirst()
+    instructors_description_in = MapCompose(remove_tags, str.strip)
 
 class CourseItem(scrapy.Item):
     # define the fields for your item here like:
@@ -16,6 +21,7 @@ class CourseItem(scrapy.Item):
     headline = scrapy.Field()
     url = scrapy.Field()
     instructors = scrapy.Field()
+    instructors_description = scrapy.Field()
     lectures = scrapy.Field(
         output_processor=Join(' | ')
     )
